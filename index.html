@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mind Track</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Mind Track</h1>
+    <nav>
+      <button class="tab active" data-tab="today">Today</button>
+      <button class="tab" data-tab="thought">Thought Record</button>
+      <button class="tab" data-tab="worry">Worry Time</button>
+      <button class="tab" data-tab="talkback">Talking Back</button>
+      <button class="tab" data-tab="history">History</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- TODAY -->
+    <section id="today" class="view active">
+      <h2 id="todayDate"></h2>
+      <p class="muted">A calm check-in. Pick what helps right now.</p>
+
+      <div class="quick-grid">
+        <button class="quick" data-goto="thought">Log a thought<small>Situation · feeling · intensity</small></button>
+        <button class="quick" data-goto="worry">Capture a worry<small>Save it for worry time</small></button>
+        <button class="quick" data-goto="talkback">Talk back<small>Challenge a harsh thought</small></button>
+      </div>
+
+      <div class="panel">
+        <h3>Past 7 days — emotion intensity</h3>
+        <div id="chart7" class="chart7"></div>
+        <p class="muted small">Average of your thought-record intensity per day (0–100).</p>
+      </div>
+
+      <div class="panel">
+        <h3>Today's entries</h3>
+        <ul id="todayList" class="entry-list"></ul>
+        <p id="todayEmpty" class="muted small" hidden>Nothing logged yet today. That's okay.</p>
+      </div>
+    </section>
+
+    <!-- THOUGHT RECORD -->
+    <section id="thought" class="view">
+      <h2>Thought Record</h2>
+      <p class="muted">Simple Thought Record (Psychology Tools).</p>
+      <form id="thoughtForm" class="form">
+        <label>Situation <span class="hint">Who, what, when, where?</span>
+          <textarea name="situation" rows="2" required></textarea>
+        </label>
+        <label>Feeling(s) <span class="hint">e.g. anxious, sad, angry</span>
+          <input name="feeling" type="text" required />
+        </label>
+        <label>Intensity (0–100)
+          <input name="intensity" type="range" min="0" max="100" value="50" />
+          <output id="intensityOut">50</output>
+        </label>
+        <label>Thought <span class="hint">What was going through your mind?</span>
+          <textarea name="thought" rows="3" required></textarea>
+        </label>
+        <div class="actions">
+          <button type="submit" class="primary">Save</button>
+          <button type="reset" class="ghost">Clear</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- WORRY TIME -->
+    <section id="worry" class="view">
+      <h2>Worry Time</h2>
+      <p class="muted">Set a daily worry window. Postpone worries the rest of the day.</p>
+
+      <div class="panel">
+        <h3>Your worry time</h3>
+        <label class="inline">Daily start
+          <input id="worryStart" type="time" />
+        </label>
+        <label class="inline">Minutes
+          <input id="worryMins" type="number" min="5" max="60" step="5" value="30" />
+        </label>
+        <button id="saveWorryTime" class="primary small">Save</button>
+        <p id="worryNote" class="muted small"></p>
+      </div>
+
+      <div class="panel">
+        <h3>Capture a worry (postpone)</h3>
+        <form id="worryCaptureForm" class="form">
+          <textarea name="worry" rows="2" placeholder="What's the worry? Save it for later." required></textarea>
+          <div class="actions">
+            <button type="submit" class="primary">Park it</button>
+          </div>
+        </form>
+        <ul id="parkedList" class="entry-list"></ul>
+      </div>
+
+      <div class="panel">
+        <h3>Worry session log</h3>
+        <p class="muted small">When worry time is over, jot what you noticed.</p>
+        <form id="worrySessionForm" class="form">
+          <textarea name="notes" rows="3" placeholder="Any shift? Bored? Surprised by anything?" required></textarea>
+          <div class="actions">
+            <button type="submit" class="primary">Log session</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TALKING BACK -->
+    <section id="talkback" class="view">
+      <h2>Talking Back</h2>
+      <p class="muted">Validity · Utility · Compassion · Reframe.</p>
+      <form id="talkbackForm" class="form">
+        <label>Thought
+          <textarea name="thought" rows="2" required></textarea>
+        </label>
+        <label>How valid is this thought? <span class="hint">Detective/lawyer mode — what's the evidence?</span>
+          <textarea name="validity" rows="2"></textarea>
+        </label>
+        <label>How useful is this thought to me?
+          <textarea name="utility" rows="2"></textarea>
+        </label>
+        <label>Would I say this to a friend?
+          <textarea name="compassion" rows="2"></textarea>
+        </label>
+        <label>What can I say instead?
+          <textarea name="reframe" rows="2" required></textarea>
+        </label>
+        <div class="actions">
+          <button type="submit" class="primary">Save</button>
+          <button type="reset" class="ghost">Clear</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- HISTORY -->
+    <section id="history" class="view">
+      <h2>History</h2>
+      <div class="panel">
+        <div class="filters">
+          <label class="inline">Filter
+            <select id="historyFilter">
+              <option value="all">All</option>
+              <option value="thought">Thought records</option>
+              <option value="worry_capture">Parked worries</option>
+              <option value="worry_session">Worry sessions</option>
+              <option value="talkback">Talk-backs</option>
+            </select>
+          </label>
+          <button id="exportBtn" class="ghost small">Export JSON</button>
+          <label class="ghost small import-label">
+            Import JSON
+            <input id="importInput" type="file" accept="application/json" hidden />
+          </label>
+          <button id="clearBtn" class="danger small">Clear all</button>
+        </div>
+        <ul id="historyList" class="entry-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot muted small">
+    Local only · data stays in your browser (localStorage). Not a substitute for professional care.
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
