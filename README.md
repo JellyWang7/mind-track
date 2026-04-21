@@ -32,13 +32,13 @@ Plus:
 ### Easiest
 
 ```bash
-open /Users/Jelly1/Documents/my-app/mind-track/index.html
+open /your_mind_track_directory/index.html
 ```
 
 ### Via local server (recommended if your browser restricts `file://`)
 
 ```bash
-cd /Users/Jelly1/Documents/my-app/mind-track
+cd /your_local_directory/mind-track
 python3 -m http.server 8787
 # then visit http://localhost:8787
 ```
